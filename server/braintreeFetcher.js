@@ -3,7 +3,7 @@ global.Headers = fetch.Headers;
 
 const ourHeaders = new Headers();
 ourHeaders.append('Content-Type', 'application/json');
-ourHeaders.append('Braintree-Version', '2019-01-01');
+ourHeaders.append('Braintree-Version', '2019-02-23');
 ourHeaders.append('Authorization', 'Basic YjhxazNuNXQ1ank1Mno2eDo0Y2EyZDU4OThlMTFlZmI1NjhhOTY5ZDBmZTg1YWUxOA')
 
 exports.hello = function hello(res) {

@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-var graph = require('../../braintreeFetcher');
+var graph = require('../braintreeFetcher');
 
 module.exports = (app) => {
 
