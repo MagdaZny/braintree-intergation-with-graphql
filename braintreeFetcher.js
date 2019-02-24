@@ -14,7 +14,7 @@ exports.hello = function hello(res) {
         });
 }
 
-exports.fetchQuery = function fetchQuery(res) {
+exports.heartbeat = function heartbeat(res) {
     fetch('https://payments.sandbox.braintree-api.com/graphql', {
         method: 'POST',
         headers: ourHeaders,

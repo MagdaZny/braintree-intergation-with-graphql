@@ -1,8 +1,9 @@
-var express = require('express');
+const express = require('express');
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
-var graph = require('./graphQLFetch');
+const app = express();
 
+require('./routes/api')(app);
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
@@ -22,16 +23,12 @@ var root = {
   },
 };
 
-var app = express();
-
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   rootValue: root,
   graphiql: true,
 })).get('/magda', (req, res) => {
   graph.hello(res);
-}).get('/magda2', (req, res) => {
-  graph.fetchQuery(res);
 });
 
 app.listen(4000);
