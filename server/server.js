@@ -1,29 +1,62 @@
 const express = require('express');
-var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
+var express_graphql = require('express-graphql');
 const app = express();
+const { buildSchema } = require('graphql');
+
+const { GraphQLObjectType, GraphQLString,} = require('graphql');
 
 require('./routes/api')(app);
 
-// Construct a schema, using GraphQL schema language
+// GraphQL schema
 var schema = buildSchema(`
     type Query {
-      hello: String
-      test: String
-    }`
-);
+        member(id: Int): Member
+    },
+    type Member {
+        id: Int
+        name: String
+    }
+`);
+
+var data = {
+      id: 1,
+      name: 'The Complete Node.js Developer Course'
+  }
+
+// const RootQuery = new GraphQLObjectType({
+//   name: 'RootQuery',
+//   fields: {
+//     member: {
+//       type: MemberType,
+//       args: {
+//         id: { type: GraphQLString }
+//       }
+//       // resolve (parentValue, args) {
+//         //  return axios.get(fakeDB + '/members/' + args.id)
+//         //   .then(res => res.data) 
+//         // return data
+//           // .then(member => member)
+//           // .catch(err => console.error('Error exectuing member query', err))
+//       }
+//     }
+//     // ,
+//     // members: {
+//     //   type: new GraphQLList(MemberType),
+//     //   resolve (parentValue, args) {
+//     //     //  return axios.get(fakeDB + '/members/')
+//     //       // .then(res => res.data) 
+//     //     return getMembers()
+//     //     .then(members => "")
+//     //   }}
+//     }})
+
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  hello: () => {
-    return 'Hello world!';
-  },
-  test: () => {
-    return 'Hello test!';
-  },
-};
+  member: data
+  };
 
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', express_graphql({
   schema: schema,
   rootValue: root,
   graphiql: true,
