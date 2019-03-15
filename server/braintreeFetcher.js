@@ -25,3 +25,40 @@ exports.heartbeat = function heartbeat(res) {
             res.send({ data });
         });
 }
+
+exports.getToken = function getToken(res) {
+    fetch('https://payments.sandbox.braintree-api.com/graphql', {
+        method: 'POST',
+        headers: ourHeaders,
+        body: JSON.stringify({ query: "mutation { createClientToken { clientToken }}" }),
+    }).then(res => res.json())
+        .then(data => {
+            res.send({ token : data.data.createClientToken.clientToken });
+        });  
+}
+
+exports.charge = function charge(res) {
+    fetch('https://payments.sandbox.braintree-api.com/graphql', {
+        method: 'POST',
+        headers: ourHeaders,
+        body: JSON.stringify({ query:  
+           " mutation ExampleCharge($input: ChargePaymentMethodInput!) { \
+              chargePaymentMethod(input: $input) { \
+                transaction { \
+                  id \
+                  status \
+                }\
+              }\
+            }" , variables:
+            { "input": { 
+                  "paymentMethodId": "fake-valid-nonce",
+                  "transaction": {
+                    "amount": "11.23"
+                  }
+                }
+              } }),
+    }).then(res => res.json())
+        .then(data => {
+            res.send({ data });
+        });  
+}

@@ -3,61 +3,74 @@ var express_graphql = require('express-graphql');
 const app = express();
 const { buildSchema } = require('graphql');
 
-const { GraphQLObjectType, GraphQLString,} = require('graphql');
-
 require('./routes/api')(app);
 
 // GraphQL schema
 var schema = buildSchema(`
     type Query {
         member(id: Int): Member
+        address: Address
     },
     type Member {
         id: Int
         name: String
+        address: Address
+    },
+    type Address {
+      street: String
+      city: String
     }
 `);
 
-var data = {
+var schemaSecond = buildSchema(`
+    type Query {
+        getDatacashToken: DatacashToken 
+    },
+    type DatacashToken {
+      forwardUrl: String
+    },
+    type CoenxflowToken {
+      token: String
+    },
+    enum Psp {
+      CONEXFLOW
+      DATACASH
+    },
+    type Payer{
+      customerId: String!
+      accountId: String
+      fundingInstrumentId: String
+    }
+    `);
+
+var dataMember = {
       id: 1,
-      name: 'The Complete Node.js Developer Course'
+      name: 'The Complete Node.js Developer Course',
   }
 
-// const RootQuery = new GraphQLObjectType({
-//   name: 'RootQuery',
-//   fields: {
-//     member: {
-//       type: MemberType,
-//       args: {
-//         id: { type: GraphQLString }
-//       }
-//       // resolve (parentValue, args) {
-//         //  return axios.get(fakeDB + '/members/' + args.id)
-//         //   .then(res => res.data) 
-//         // return data
-//           // .then(member => member)
-//           // .catch(err => console.error('Error exectuing member query', err))
-//       }
-//     }
-//     // ,
-//     // members: {
-//     //   type: new GraphQLList(MemberType),
-//     //   resolve (parentValue, args) {
-//     //     //  return axios.get(fakeDB + '/members/')
-//     //       // .then(res => res.data) 
-//     //     return getMembers()
-//     //     .then(members => "")
-//     //   }}
-//     }})
+  var dataAddress = {
+      street : "long",
+      city: "London"
+}
+var conexflowData = {
+  token: "happy-token"
+}
+var datacashData = {
+  forwardUrl: "wowo"
+}
+
 
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  member: data
+  member: dataMember,
+  address: dataAddress,
+  getToken: conexflowData,
+  getDatacashToken: datacashData
   };
 
 app.use('/graphql', express_graphql({
-  schema: schema,
+  schema: schemaSecond,
   rootValue: root,
   graphiql: true,
 })).get('/magda', (req, res) => {
