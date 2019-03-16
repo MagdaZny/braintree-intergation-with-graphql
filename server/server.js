@@ -1,26 +1,28 @@
 const express = require('express');
 var express_graphql = require('express-graphql');
 const app = express();
+const graph = require('./braintreeClient');
+const types = require('./types')
 const { buildSchema } = require('graphql');
+
 
 require('./routes/api')(app);
 
-// GraphQL schema
-var schema = buildSchema(`
-    type Query {
-        member(id: Int): Member
-        address: Address
-    },
-    type Member {
-        id: Int
-        name: String
-        address: Address
-    },
-    type Address {
-      street: String
-      city: String
-    }
-`);
+var dataMember = {
+      id: 1,
+      name: 'The Complete Node.js Developer Course',
+  }
+
+  var dataAddress = {
+      street : "long",
+      city: "London"
+}
+var conexflowData = {
+  token: "happy-token"
+}
+var datacashData = {
+  forwardUrl: "wowo"
+}
 
 var schemaSecond = buildSchema(`
     type Query {
@@ -42,25 +44,6 @@ var schemaSecond = buildSchema(`
       fundingInstrumentId: String
     }
     `);
-
-var dataMember = {
-      id: 1,
-      name: 'The Complete Node.js Developer Course',
-  }
-
-  var dataAddress = {
-      street : "long",
-      city: "London"
-}
-var conexflowData = {
-  token: "happy-token"
-}
-var datacashData = {
-  forwardUrl: "wowo"
-}
-
-
-
 // The root provides a resolver function for each API endpoint
 var root = {
   member: dataMember,
@@ -71,6 +54,7 @@ var root = {
 
 app.use('/graphql', express_graphql({
   schema: schemaSecond,
+  // types.schemaSecond,
   rootValue: root,
   graphiql: true,
 })).get('/magda', (req, res) => {

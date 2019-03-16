@@ -15,7 +15,6 @@ exports.hello = function hello(res) {
         });
 }
 
-let URL = 'https://payments.sandbox.braintree-api.com/graphql';
 exports.heartbeat = function heartbeat(res) {
     fetch(URL, {
         method: 'POST',
@@ -38,14 +37,14 @@ exports.getToken = function getToken(res) {
             res.send({ token: data.data.createClientToken.clientToken });
         });
 }
-let chargeQuery = "mutation ExampleCharge($input: ChargePaymentMethodInput!) {" +
-    "chargePaymentMethod(input: $input) { " +
-    "transaction { " +
-    "id " +
-    "status " +
-    "}" +
-    "}" +
-    "}"
+let chargeQuery = "mutation ExampleCharge($input: ChargePaymentMethodInput!) {" +""
+    // "chargePaymentMethod(input: $input) { " +
+    // "transaction { " +
+    // "id " +
+    // "status " +
+    // "}" +
+    // "}" +
+    // "}"
 
 // save query, call it, extract queries to a separate file
 // use some hardcoded data, db, to show how we can have operations on various psps

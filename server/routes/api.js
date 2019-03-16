@@ -1,4 +1,4 @@
-var graph = require('../braintreeFetcher');
+var graph = require('../braintreeClient');
 
 module.exports = (app) => {
 
@@ -8,7 +8,8 @@ module.exports = (app) => {
       })
       .get('/token', (req, res) => {
          graph.getToken(res);
-    }).get('/charge', (req, res) => {
+    })
+    .get('/charge', (req, res) => {
       graph.charge(res);
  })
   }
