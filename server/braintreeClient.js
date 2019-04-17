@@ -27,40 +27,44 @@ exports.heartbeat = function heartbeat(res) {
         });
 }
 
+let tokenQuery = `mutation { 
+    createClientToken { 
+        clientToken 
+    }
+}`;
 exports.getToken = function getToken(res) {
     fetch(URL, {
         method: 'POST',
         headers: ourHeaders,
-        body: JSON.stringify({ query: "mutation { createClientToken { clientToken }}" }),
+        body: JSON.stringify({ query: tokenQuery }),
     }).then(res => res.json())
         .then(data => {
             res.send({ token: data.data.createClientToken.clientToken });
         });
 }
-let chargeQuery = "mutation ExampleCharge($input: ChargePaymentMethodInput!) {" +""
-    // "chargePaymentMethod(input: $input) { " +
-    // "transaction { " +
-    // "id " +
-    // "status " +
-    // "}" +
-    // "}" +
-    // "}"
 
-// save query, call it, extract queries to a separate file
-// use some hardcoded data, db, to show how we can have operations on various psps
-
+let query = `mutation ExampleCharge($input: ChargePaymentMethodInput!) {
+    chargePaymentMethod(input: $input) { 
+        transaction { 
+            id: status 
+        } 
+    }
+}`;
+var paymentMethodId = "fake-valid-nonce";
+var amount = "11.23";
 
 exports.charge = function charge(res) {
     fetch(URL, {
         method: 'POST',
         headers: ourHeaders,
         body: JSON.stringify({
-            query: chargeQuery, variables:
+            query,
+            variables:
             {
                 input: {
-                    paymentMethodId: "fake-valid-nonce",
+                    paymentMethodId,
                     transaction: {
-                        amount: "11.23"
+                        amount
                     }
                 }
             }

@@ -1,41 +1,27 @@
 const { buildSchema } = require('graphql');
 
 // GraphQL schema
-var schema = buildSchema(`
+var pspSchema = buildSchema(`
     type Query {
-        member(id: Int): Member
-        address: Address
-    },
-    type Member {
-        id: Int
-        name: String
-        address: Address
-    },
-    type Address {
-      street: String
-      city: String
-    }
-`);
-exports.schema = schema;
-var schemaSecond = buildSchema(`
-    type Query {
-        getDatacashToken: DatacashToken 
+        getDatacashToken: DatacashToken,
+        getConexflowToken: ConexflowToken,
+        getPayer(customerId: String!): Payer
     },
     type DatacashToken {
       forwardUrl: String
     },
-    type CoenxflowToken {
+    type ConexflowToken {
       token: String
     },
-    enum Psp {
-      CONEXFLOW
-      DATACASH
-    },
-    type Payer{
-      customerId: String!
+    type FI {
+      customerId: String
       accountId: String
-      fundingInstrumentId: String
+      fundingInstrument: String
+      transactions: [Trnasaction]
+    }, type Transaction{
+        
     }
+
     `);
-exports.schemaSecond = schemaSecond;
+exports.pspSchema = pspSchema;
 
